@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "mybatis-3-config.dtd" >
+<configuration>
+    <properties resource="jdbc.properties"/>
+<!--    <settings>-->
+<!--        <setting name="logImpl" value="LOG4J2"/>-->
+<!--    </settings>-->
+    <!-- 配置数据库连接 -->
+    <!--
+      environments:环境集，可以在里面配置多个environment，一个environment对应一个数据库连接
+      mybatis支持配置多个数据库连接，但是只能执行一个
+      default属性：作用就是指定默认执行的数据库连接environment标签的id属性
+     -->
+    <environments default="mysql">
+        <environment id="mysql">
+            <!--配置事务的类型-->
+            <!--JDBC：使用JDBC的事务提交回滚-->
+            <transactionManager type="JDBC"/>
+            <dataSource type="com.gec.utils.MyselfDefineDataSourceFactory">
+
+                <!-- 驱动 -->
+                <property name="driverClassName" value="${driverClassName}"/>
+                <!-- 连接字符串 -->
+                <property name="url" value="${url}"/>
+                <!-- 用户名 -->
+                <property name="username" value="${username}"/>
+                <!-- 密码 -->
+                <property name="password" value="${password}"/>
+                <!--初始化时池中建立的物理连接个数-->
+                <property name="initialSize" value="${initialSize}"/>
+                <!--最最大的可活跃的连接池数量-->
+                <property name="maxActive" value="${maxActive}"/>
+                <!--配置获取连接等待超时的时间-->
+                <property name="maxWait" value="${maxWait}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <!-- 加载映射文件 -->
+    <mappers>
+        <mapper resource="mapper\userMapper.xml"/>
+        <mapper resource="mapper\ScrapMapper.xml"/>
+        <mapper resource="mapper\TypeMapper.xml"/>
+        <mapper resource="mapper\RunMapper.xml"/>
+        <mapper resource="mapper\RepairMapper.xml"/>
+    </mappers>
+
+</configuration>

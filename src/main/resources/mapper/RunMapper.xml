@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<!-- 注意事项：使用映射接口的配置方式，namespace必须指向接口的类全名 -->
+<mapper namespace="com.gec.mapper.RunMapper">
+
+    <insert id="insert">
+        <!--
+            注意：如果传递过来的是一个JavaBean对象，那么设置的属性名为，set方法对应的属性名。
+            如：setStuName 对应的是 stuName
+         -->
+        INSERT INTO devicerun (LabName ,dateRun, run, idRun, nameRun) VALUES (#{LabName},#{dateRun},#{run},#{idRun}, #{nameRun})
+    </insert>
+
+    <!--查询-->
+    <select id="select" resultType="com.gec.entity.DeviceRun">
+        select LabName ,dateRun, run, idRun, nameRun from devicerun;
+    </select>
+
+    <select id="selectID" resultType="com.gec.entity.DeviceRun">
+        select LabName ,dateRun, run, idRun, nameRun from devicerun where idRun=#{idRun};
+    </select>
+
+    <select id="selectLabName" resultType="com.gec.entity.DeviceRun">
+        select LabName ,dateRun, run, idRun, nameRun from devicerun where LabName=#{LabName};
+    </select>
+
+    <select id="selectByDate" parameterType="Map" resultType="com.gec.entity.DeviceRun">
+        select * from devicerun
+        <where>
+            <if test="year!=null">
+                AND YEAR(dateRun) = #{year}
+            </if>
+            <if test="month!=null">
+                AND MONTH(dateRun) = #{month}
+            </if>
+        </where>
+    </select>
+
+    <!--修改-->
+    <!--只有实验室中的设备运行状态 设备入实验室日期 可以修改-->
+    <update id="update" parameterType="com.gec.entity.DeviceRun">
+        update devicerun set dateRun=#{dateRun},run=#{run} where idRun=#{idRun}
+    </update>
+
+    <!--删除-->
+    <!--通过实验室的LabName和设备idRun组合删除-->
+    <delete id="delete">
+        delete from devicerun where idRun=#{idRun}
+    </delete>
+
+    <delete id="deleteLabName" parameterType="com.gec.entity.DeviceRun">
+        delete from devicerun where LabName=#{LabName}
+    </delete>
+
+</mapper>
